@@ -17,11 +17,6 @@
         
     - name: Check httpd status
       ansible.builtin.shell: systemctl status httpd
-      register: httpd_status
-      
-    - name: display var
-      ansible.builtin.debug:
-         var: httpd_status
 
     - name: restart httpd
       ansible.builtin.debug:
@@ -44,11 +39,9 @@
     - name: Restart httpd
       ansible.builtin.service:
         name: httpd
-        status: restarted
-      when: httpd_status.stdout == "running"
+        state: restarted
       
     - name: Stop httpd
       ansible.builtin.service:
         name: httpd
-        state: stopped
-      when: httpd_status.stdout == "running"      
+        state: stopped     
