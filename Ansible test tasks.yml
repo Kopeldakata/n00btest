@@ -16,14 +16,14 @@
         var: httpd_status
  
     - name: restart httpd
-      ansible.builtin.debug:
-        msg: Restarting httpd
       notify: 
         - Restart httpd        
 
     - name: Display shutdown msg      
       ansible.builtin.debug:
         msg: Shutting down httpd since it is only for testing purposes
+        
+    - name: shutdown
       notify:
         - Stop httpd
 
