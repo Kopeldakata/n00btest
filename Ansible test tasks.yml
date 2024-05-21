@@ -43,10 +43,10 @@
       ansible.builtin.service:
         name: httpd
         state: restarted
-      when: httpd_status == "running"       
+      when: httpd_status.state == "started"       
       
     - name: Stop httpd
       ansible.builtin.service:
         name: httpd
         state: stopped
-      when: httpd_status == "running"        
+      when: httpd_status.state == "started"        
