@@ -7,9 +7,13 @@
     - name: Install the latest version of httpd and start the service
       ansible.builtin.yum:
         name: httpd
-        state: latest
-      notify:
-        - Start httpd        
+        state: latest 
+
+    - name: Start httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
+      register: httpd_status
       
     - name: Display var
       ansible.builtin.debug:
@@ -30,10 +34,3 @@
         name: httpd
         state: stopped         
       when: httpd_status.state == "started"
-
-  handlers:
-    - name: Start httpd
-      ansible.builtin.service:
-        name: httpd
-        state: started
-      register: httpd_status          
