@@ -6,12 +6,14 @@
   tasks:
     - name: Print out facts
       ansible.builtin.debug:
-        var: ansible_hostname
+        msg: "{{ ansible_hostname }}"
         
-    - name: Print out facts
-      ansible.builtin.debug:
-        var: ansible_distribution_file_variety      
-
-    - name: Print out facts
-      ansible.builtin.debug:      
-        var: ansible_distribution_version
+    - name: Check if the hostname string matches a criteria
+      ansible.builtin.set_fact:
+        hnm: "{{ ansible_hostname | regex_search('^CSM') }}"
+        
+    - name: print new var
+      debug:
+      msg: "{{ hnm }}"
+      
+    
