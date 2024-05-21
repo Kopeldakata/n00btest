@@ -21,12 +21,6 @@
       notify: 
         - Restart httpd        
 
-    - name: Display shutdown msg      
-      ansible.builtin.debug:
-        msg: Shutting down httpd since it is only for testing purposes
-      notify:
-        - Stop httpd
-
   handlers:
     - name: Start httpd
       ansible.builtin.service:
