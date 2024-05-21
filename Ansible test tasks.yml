@@ -15,24 +15,8 @@
       notify:
         - Start httpd
 
-    - name: restart httpd
-      ansible.builtin.debug:
-        msg: Restarting httpd
-      notify: 
-        - Restart httpd        
-
   handlers:
     - name: Start httpd
       ansible.builtin.service:
         name: httpd
         state: started
-
-    - name: Restart httpd
-      ansible.builtin.service:
-        name: httpd
-        state: restarted
-      
-    - name: Stop httpd
-      ansible.builtin.service:
-        name: httpd
-        state: stopped     
