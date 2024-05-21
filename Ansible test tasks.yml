@@ -15,11 +15,6 @@
       ansible.builtin.service:
         name: httpd
         state: started
-      register: httpd_status
-      
-    - name: Display var
-      ansible.builtin.debug:
-        var: httpd_status
  
     - name: restart httpd
       ansible.builtin.debug:
@@ -43,10 +38,10 @@
       ansible.builtin.service:
         name: httpd
         state: restarted
-      when: httpd_status.state == "started"       
+    
       
     - name: Stop httpd
       ansible.builtin.service:
         name: httpd
         state: stopped
-      when: httpd_status.state == "started"        
+     
