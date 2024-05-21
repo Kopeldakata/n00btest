@@ -14,9 +14,6 @@
         msg: Starting httpd
       notify:
         - Start httpd
-        
-    - name: Check httpd status
-      ansible.builtin.shell: systemctl status httpd
 
     - name: restart httpd
       ansible.builtin.debug:
