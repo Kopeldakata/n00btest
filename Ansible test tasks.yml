@@ -4,12 +4,12 @@
   become: yes
   gather_facts: no
   tasks:
-    - name: Install the latest version of httpd and restart
+    - name: Install the latest version of httpd and start
       ansible.builtin.yum:
         name: httpd
         state: latest
       notify: 
-        - Restart httpd
+        - Start httpd
         
     - name: Check httpd status
       shell: systemctl status httpd
@@ -17,7 +17,13 @@
       
     - name: display var
       ansible.builtin.debug:
-         var: httpd_status       
+         var: httpd_status
+
+    - name: restart httpd
+      ansible.builtin.debug:
+        msg: Restarting httpd
+      notify: 
+        - Restart httpd        
 
     - name: Display shutdown msg      
       ansible.builtin.debug:
@@ -26,12 +32,19 @@
         - Stop httpd
 
   handlers:
+    - name: Start httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
+
     - name: Restart httpd
       ansible.builtin.service:
         name: httpd
-        state: restarted
+        status: restarted
+      when: httpd_status.stdout == "running"
+      
     - name: Stop httpd
       ansible.builtin.service:
         name: httpd
         state: stopped
-      when: httpd_status.stdout == "running"
+      when: httpd_status.stdout == "running"      
