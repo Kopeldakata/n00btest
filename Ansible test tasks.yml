@@ -4,33 +4,38 @@
   become: yes
   gather_facts: no
   tasks:
-    - name: Install the latest version of httpd and start the service
+    - name: Install the latest version of httpd and notify handlers
       ansible.builtin.yum:
         name: httpd
-        state: latest 
+        state: latest
+      notify:
+        - Start httpd
+        - Restart httpd
+        - Stop httpd        
 
-    - name: Start httpd
-      ansible.builtin.service:
-        name: httpd
-        state: started
-      register: httpd_status
-      
-    - name: Display var
-      ansible.builtin.debug:
-        var: httpd_status
- 
-    - name: restart httpd
-      ansible.builtin.service:
-        name: httpd
-        state: restarted         
-      when: httpd_status.state == "started"        
-
+    - name: Check httpd status and define var
+      ansible.builtin.shell: systemctl status httpd
+      register: httpd_status       
+       
     - name: Display shutdown msg      
       ansible.builtin.debug:
         msg: Shutting down httpd since it is only for testing purposes
-        
-    - name: stop httpd
-      ansible.builtin.service:
-        name: httpd
-        state: stopped         
-      when: httpd_status.state == "started"
+      
+  handlers:
+  - name: Start httpd
+    ansible.builtin.service:
+      name: httpd
+      state: started
+    when: httpd_status.state == "stopped"
+    
+  - name: Restart httpd
+    ansible.builtin.service:
+      name: httpd
+      state: restarted
+    when: httpd_status.state == "started"
+
+  - name: Stop httpd
+    ansible.builtin.service:
+      name: httpd
+      state: stopped
+    when: httpd_status.state == "started"    
