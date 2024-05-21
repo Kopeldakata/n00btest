@@ -16,32 +16,24 @@
         var: httpd_status
  
     - name: restart httpd
-      notify: 
-        - Restart httpd        
+      ansible.builtin.service:
+        name: httpd
+        state: restarted         
+      when: httpd_status.state == "started"        
 
     - name: Display shutdown msg      
       ansible.builtin.debug:
         msg: Shutting down httpd since it is only for testing purposes
         
-    - name: shutdown
-      notify:
-        - Stop httpd
+    - name: stop httpd
+      ansible.builtin.service:
+        name: httpd
+        state: stopped         
+      when: httpd_status.state == "started"
 
   handlers:
     - name: Start httpd
       ansible.builtin.service:
         name: httpd
         state: started
-      register: httpd_status  
-
-    - name: Restart httpd
-      ansible.builtin.service:
-        name: httpd
-        state: restarted
-      when: httpd_status.state == "started"       
-      
-    - name: Stop httpd
-      ansible.builtin.service:
-        name: httpd
-        state: stopped
-      when: httpd_status.state == "started"        
+      register: httpd_status          
