@@ -9,24 +9,32 @@
         name: httpd
         state: latest
       notify: 
-        - Restart Apache
+        - Restart httpd
+        
     - name: Check httpd status
       shell: systemctl status httpd
       register: httpd_status
-    #- set fact: status="{{ httpd_status.stdout }}"
-    #- debug: var=status
+      
+    - name: display var
+      ansible.builtin.debug:
+         var: httpd_status       
+
     - name: Display shutdown msg      
       ansible.builtin.debug:
         msg: Shutting down httpd since it is only for testing purposes
-      when: httpd_status.stdout == "running"   
+      when: httpd_status.stdout == "running"
+     
     - name: Stop httpd if running
+      notify: 
+        - Stop httpd
+
+  handlers:
+    - name: Restart httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
+    - name: Stop httpd
       ansible.builtin.service:
         name: httpd
         state: stopped
       when: httpd_status.stdout == "running"
-
-  handlers:
-    - name: Restart Apache
-      ansible.builtin.service:
-        name: httpd
-        state: restarted
