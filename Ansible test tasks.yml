@@ -8,8 +8,10 @@
       ansible.builtin.yum:
         name: httpd
         state: latest
-        notify: 
-          - Restart Apache
+    - name: restart httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
     - name: Stop httpd if running
       ansible.builtin.service:
         name: httpd
@@ -23,10 +25,6 @@
       when: httpd == "stopped"       
 
   handlers:
-    - name: Restart Apache
-      ansible.builtin.service:
-        name: httpd
-        state: restarted
     - name: Stop Apache
       ansible.builtin.service:
         name: httpd
