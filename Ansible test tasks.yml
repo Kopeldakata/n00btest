@@ -2,7 +2,7 @@
 - name: Install httpd and execute start/stop
   hosts: webservers
   remote_user: networkops
-  become: true
+  become: no
   gather_facts: no
   tasks:
     - name: Install the latest version of httpd and restart
