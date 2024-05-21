@@ -12,7 +12,7 @@
         - Restart Apache
     - name: Check httpd status
       shell: systemctl status httpd
-        register: httpd_status
+        register: httpd_status.stdout
     - set fact: status="{{ httpd_status.stdout }}
     - debug: var=status
     - name: Stop httpd if running
