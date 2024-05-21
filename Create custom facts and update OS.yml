@@ -1,1 +1,10 @@
-
+---
+- name: Create custom facts and update OS
+  hosts: webservers
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Print out facts
+      ansible.builtin.debug:
+        msg: Printing out facts
+        var: ansible_hostname        
