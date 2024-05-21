@@ -8,24 +8,23 @@
       ansible.builtin.yum:
         name: httpd
         state: latest
-    - name: restart httpd
-      ansible.builtin.service:
-        name: httpd
-        state: restarted
+      notify: 
+        - Restart Apache
+    - name: Check httpd status
+      shell: systemctl status httpd
+        register: output
     - name: Stop httpd if running
       ansible.builtin.service:
         name: httpd
-        state: started
-        notify: 
-          - Stop Apache
-      when: httpd == "started"
+        state: stopped
+      when: output.stdout == 'active'
     - name: Display shutdown msg      
       ansible.builtin.debug:
         msg: Shutting down httpd since it is only for testing purposes
       when: httpd == "stopped"       
 
   handlers:
-    - name: Stop Apache
+    - name: Restart Apache
       ansible.builtin.service:
         name: httpd
-        state: stopped
+        state: restarted
