@@ -12,12 +12,14 @@
         - Restart Apache
     - name: Check httpd status
       shell: systemctl status httpd
-        register: output
+        register: httpd_status
+    - set fact: status="{{ httpd_status.stdout }}
+    - debug: var=status
     - name: Stop httpd if running
       ansible.builtin.service:
         name: httpd
         state: stopped
-      when: output.stdout == 'active'
+      when: status == 'running'
     - name: Display shutdown msg      
       ansible.builtin.debug:
         msg: Shutting down httpd since it is only for testing purposes
