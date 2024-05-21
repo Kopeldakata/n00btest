@@ -12,10 +12,6 @@
         - Start httpd
         - Restart httpd
         - Stop httpd        
-
-    - name: Check httpd status and define var
-      ansible.builtin.shell: systemctl status httpd
-      register: httpd_status       
        
     - name: Display shutdown msg      
       ansible.builtin.debug:
@@ -26,7 +22,7 @@
     ansible.builtin.service:
       name: httpd
       state: started
-    when: httpd_status.state == "stopped"
+    register: httpd_status
     
   - name: Restart httpd
     ansible.builtin.service:
