@@ -7,13 +7,13 @@
     - name: Install the latest version of httpd and restart
       ansible.builtin.yum:
         name: httpd
-        httpd state: latest
+        state: latest
         notify: 
           - Restart Apache
     - name: Stop httpd if running
       ansible.builtin.service:
         name: httpd
-        httpd state: started
+        state: started
         notify: 
           - Stop Apache
       when: httpd == "started"
