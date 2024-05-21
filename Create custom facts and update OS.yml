@@ -6,5 +6,4 @@
   tasks:
     - name: Print out facts
       ansible.builtin.debug:
-        msg: Printing out facts
         var: ansible_hostname        
