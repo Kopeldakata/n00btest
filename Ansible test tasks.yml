@@ -22,10 +22,7 @@
     - name: Display shutdown msg      
       ansible.builtin.debug:
         msg: Shutting down httpd since it is only for testing purposes
-      when: httpd_status.stdout == "running"
-     
-    - name: Stop httpd if running
-      notify: 
+      notify:
         - Stop httpd
 
   handlers:
