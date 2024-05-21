@@ -12,7 +12,7 @@
         - Start httpd
         
     - name: Check httpd status
-      shell: systemctl status httpd
+      ansible.builtin.shell: systemctl status httpd
       register: httpd_status
       
     - name: display var
