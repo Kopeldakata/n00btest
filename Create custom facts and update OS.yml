@@ -13,7 +13,7 @@
         hnm: "{{ ansible_hostname | regex_search('^CSM') }}"
         
     - name: print new var
-      debug:
-      msg: "{{ hnm }}"
+      ansible.builtin.debug:
+        msg: "{{ hnm }}"
       
     
