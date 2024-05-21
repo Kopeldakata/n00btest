@@ -17,6 +17,6 @@
         msg: "{{ hnm }}"
       
     - name: Check if hostname matches string
-      ansible.builtin.regex:
+      is ansible.builtin.regex:
         name: "{{ ansible_hostname }}"
         foundmatch: name is regex ('^CSM', ignorecase=True)
